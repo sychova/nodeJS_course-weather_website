@@ -8,7 +8,12 @@ const forecast = (lat, lon, callback) => {
         } else if (body.error) {
             callback('No match found.', undefined)
         } else {
-            callback(undefined, `${body.current.weather_descriptions[0]}. It is currently ${body.current.temperature} degrees out. It feels like ${body.current.feelslike} degrees out.`)
+            callback(undefined, {
+                description: body.current.weather_descriptions[0],
+                temperature: body.current.temperature,
+                feelslike: body.current.feelslike,
+                icon: body.current.weather_icons[0]
+            })
         }
     })
 }
