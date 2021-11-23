@@ -36,8 +36,20 @@ h1 {
     width: 250px;
 }
 
-.content {
+.wrapper {
     flex-grow: 1;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.content img {
+    border-radius: 50%;
+    margin-right: 10px;
 }
 
 input {

@@ -43,16 +43,32 @@ app.get('/help', (req, res) => {
 })
 
 app.get('/weather', (req, res) => {
-    if (!req.query.address) {
+    if (!req.query.address && !req.query.lat && !req.query.lon) {
         return res.send({
-            error: 'No address provided!'
+            error: 'No location provided!'
         })
     }
-    geocode.geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
-        if (error) {
-            return res.send({ error })
-        }
-        forecast.forecast(latitude, longitude, (error, { description, temperature, feelslike, icon }) => {
+
+    if (req.query.address) {
+        geocode.geocode(req.query.address, (error, { latitude, longitude } = {}) => {
+            if (error) {
+                return res.send({ error })
+            }
+            forecast.forecast(latitude, longitude, (error, { description, temperature, feelslike, icon, location }) => {
+                if (error) {
+                    return res.send({ error })
+                }
+                res.send({
+                    description,
+                    temperature,
+                    feelslike,
+                    icon,
+                    location
+                })
+            })
+        })
+    } else {
+        forecast.forecast(req.query.lat, req.query.lon, (error, { description, temperature, feelslike, icon, location }) => {
             if (error) {
                 return res.send({ error })
             }
@@ -61,11 +77,10 @@ app.get('/weather', (req, res) => {
                 temperature,
                 feelslike,
                 icon,
-                location,
-                address: req.query.address
+                location
             })
         })
-    })
+    }
 })
 
 app.get('/products', (req, res) => {
@@ -97,5 +112,5 @@ app.get('*', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log('App ready!')
+    console.log(`App ready on port ${port}!`)
 })
