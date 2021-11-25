@@ -25,7 +25,6 @@ custLocWeather.addEventListener('click', (event) => {
 })
 
 currLocWeather.addEventListener('click', (event) => {
-    console.log(event.target)
     event.preventDefault()
     if (!navigator.geolocation) {
         return alert('Geolocation is not supported by your browser.')

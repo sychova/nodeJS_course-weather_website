@@ -19,4 +19,22 @@ const forecast = (lat, lon, callback) => {
     })
 }
 
-module.exports.forecast = forecast
+const forecastErrCheck = (error, { description, temperature, feelslike, icon, location }) => {
+    return new Promise((resolve, reject) => {
+        if (error) {
+            reject(error)
+        }
+        resolve({
+            description,
+            temperature,
+            feelslike,
+            icon,
+            location
+        })
+    })
+}
+
+module.exports = {
+    forecast,
+    forecastErrCheck
+}
