@@ -55,14 +55,22 @@ app.get('/weather', (req, res) => {
                 return res.send({ error })
             }
             forecast(latitude, longitude, async(error, data) => {
-                const result = await forecastErrCheck(error, data)
-                res.status(200).send(result)
+                try {
+                    const result = await forecastErrCheck(error, data)
+                    res.status(200).send(result)
+                } catch (error) {
+                    console.log(error)
+                }
             })
         })
     } else {
         forecast(req.query.lat, req.query.lon, async(error, data) => {
-            const result = await forecastErrCheck(error, data)
-            res.status(200).send(result)
+            try {
+                const result = await forecastErrCheck(error, data)
+                res.status(200).send(result)
+            } catch (error) {
+                console.log(error)
+            }
         })
     }
 })

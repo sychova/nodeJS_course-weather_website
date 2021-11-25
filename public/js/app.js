@@ -6,7 +6,6 @@ const custLocWeather = document.querySelector('#custLoc')
 const currLocWeather = document.querySelector('#currLoc')
 
 custLocWeather.addEventListener('click', (event) => {
-    console.log(event.target.id)
     event.preventDefault()
     const location = search.value
     weatherMessage.textContent = 'Loading'
