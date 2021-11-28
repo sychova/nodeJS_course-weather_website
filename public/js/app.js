@@ -1,4 +1,3 @@
-// const weatherForm = document.querySelector('form')
 const search = document.querySelector('input')
 const weatherMessage = document.querySelector('#message')
 const weatherIcon = document.querySelector('#weatherIcon')
