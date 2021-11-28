@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
 const geocode = require('./utils/geocode')
-const { forecast, forecastErrCheck } = require('./utils/forecast')
+const { forecast, checkForecaseError } = require('./utils/forecast')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -56,7 +56,7 @@ app.get('/weather', (req, res) => {
             }
             forecast(latitude, longitude, async(error, data) => {
                 try {
-                    const result = await forecastErrCheck(error, data)
+                    const result = await checkForecaseError(error, data)
                     res.status(200).send(result)
                 } catch (error) {
                     console.log(error)
@@ -66,7 +66,7 @@ app.get('/weather', (req, res) => {
     } else {
         forecast(req.query.lat, req.query.lon, async(error, data) => {
             try {
-                const result = await forecastErrCheck(error, data)
+                const result = await checkForecaseError(error, data)
                 res.status(200).send(result)
             } catch (error) {
                 console.log(error)
