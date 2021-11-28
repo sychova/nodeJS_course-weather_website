@@ -19,7 +19,7 @@ const forecast = (lat, lon, callback) => {
     })
 }
 
-const checkForecaseError = (error, { description, temperature, feelslike, icon, location }) => {
+const checkForecastError = (error, { description, temperature, feelslike, icon, location }) => {
     return new Promise((resolve, reject) => {
         if (error) {
             reject(error)
@@ -36,5 +36,5 @@ const checkForecaseError = (error, { description, temperature, feelslike, icon, 
 
 module.exports = {
     forecast,
-    checkForecaseError
+    checkForecastError
 }
