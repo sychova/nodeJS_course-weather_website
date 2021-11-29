@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
 const { geocode } = require('./utils/geocode')
-const { forecast, checkForecastError } = require('./utils/forecast')
+const { forecast } = require('./utils/forecast')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -42,37 +42,23 @@ app.get('/help', (req, res) => {
     })
 })
 
-app.get('/weather', (req, res) => {
-    if (!req.query.address && !req.query.lat && !req.query.lon) {
-        return res.send({
-            error: 'No location provided!'
-        })
-    }
-
-    if (req.query.address) {
-        geocode(req.query.address, (error, { latitude, longitude } = {}) => {
-            if (error) {
-                return res.send({ error })
-            }
-            forecast(latitude, longitude, async(error, data) => {
-                try {
-                    const result = await checkForecastError(error, data)
-                    res.status(200).send(result)
-                } catch (error) {
-                    console.log(error)
-                }
+app.get('/weather', async (req, res) => {
+    try {
+        if (!req.query.address && !req.query.lat && !req.query.lon) {
+            return res.send({
+                error: 'No location provided!'
             })
-        })
-    } else {
-        forecast(req.query.lat, req.query.lon, async (error, data) => {
-            try {
-                console.log(data)
-                const result = await checkForecastError(error, data)
-                res.status(200).send(result)
-            } catch (error) {
-                console.log(error)
-            }
-        })
+        }
+        if (req.query.address) {
+            const coordinates = await geocode(req.query.address)
+            const weather = await forecast(coordinates)
+            res.status(200).send(weather)
+        } else {
+            const weather = await forecast(req.query.lat, req.query.lon)
+            res.status(200).send(weather)
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message })
     }
 })
 
