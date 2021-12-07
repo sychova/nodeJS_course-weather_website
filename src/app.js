@@ -45,30 +45,30 @@ app.get('/help', (req, res) => {
 app.get('/weather', async (req, res) => {
     try {
         if (!req.query.address && !req.query.lat && !req.query.lon) {
-            return res.send({
+            return res.json({
                 error: 'No location provided!'
             })
         }
         if (req.query.address) {
             const coordinates = await geocode(req.query.address)
             const weather = await forecast(coordinates)
-            res.status(200).send(weather)
+            res.status(200).json(weather)
         } else {
             const weather = await forecast({ latitude: req.query.lat, longitude: req.query.lon })
-            res.status(200).send(weather)
+            res.status(200).json(weather)
         }
     } catch (error) {
-        res.status(400).send({ error: error.message })
+        res.status(400).json({ error: error.message })
     }
 })
 
 app.get('/products', (req, res) => {
     if (!req.query.search) {
-        return res.send({
+        return res.json({
             error: 'No search property provided'
         })
     }
-    res.send({
+    res.json({
         location: 'Minsk',
         temperature: 2
     })
