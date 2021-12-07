@@ -41,10 +41,9 @@ const temp = {
     }
 }
 
-const forecast = async ({ latitude, longitude }) => {
+const forecast = async (latitude, longitude) => {
     const url = `http://api.weatherstack.com/current?access_key=4b2554510856f2dcc9ef34f90a838eb9&query=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}&units=m`
     const response = await request({ url, json: true })
-    // const response = temp
     if (response.error) {
         throw new Error ('No connection available.')
     } else {
