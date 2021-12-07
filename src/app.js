@@ -44,7 +44,8 @@ app.get('/help', (req, res) => {
 
 app.get('/weather', async (req, res) => {
     try {
-        if (!req.query.address && !req.query.lat && !req.query.lon) {
+        const { address, lat, lon } = req.query
+        if (!address && !lat && !lon) {
             return res.json({
                 error: 'No location provided!'
             })
