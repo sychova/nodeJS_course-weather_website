@@ -54,7 +54,7 @@ app.get('/weather', async (req, res) => {
             const weather = await forecast(coordinates)
             res.status(200).send(weather)
         } else {
-            const weather = await forecast(req.query.lat, req.query.lon)
+            const weather = await forecast({ latitude: req.query.lat, longitude: req.query.lon })
             res.status(200).send(weather)
         }
     } catch (error) {
