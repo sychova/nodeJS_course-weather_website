@@ -44,12 +44,7 @@ const temp = {
 const forecast = async ({ latitude, longitude }) => {
     const url = `http://api.weatherstack.com/current?access_key=4b2554510856f2dcc9ef34f90a838eb9&query=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}&units=m`
     const response = await request({ url, json: true })
-    console.log(latitude)
-    console.log(longitude)
-    if (response.error) {
-        console.log(response.error)
-        throw new Error ('No connection available.')
-    } else {
+    if (response.error) throw new Error ('No connection available.')
         return {
             description: response.current.weather_descriptions[0],
             temperature: response.current.temperature,
@@ -57,7 +52,6 @@ const forecast = async ({ latitude, longitude }) => {
             icon: response.current.weather_icons[0],
             location: response.location.region
         }
-    }
 }
 
 module.exports = {
