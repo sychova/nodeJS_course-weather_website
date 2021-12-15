@@ -1,8 +1,10 @@
 const path = require('path')
+require('dotenv').config()
 const express = require('express')
 const hbs = require('hbs')
 const { geocode } = require('./utils/geocode')
 const { forecast } = require('./utils/forecast')
+
 
 const app = express()
 const port = process.env.PORT || 3000

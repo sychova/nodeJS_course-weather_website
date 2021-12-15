@@ -1,7 +1,7 @@
 const request = require('request-promise-native')
 
 const forecast = async ({ latitude, longitude }) => {
-    const url = `http://api.weatherstack.com/current?access_key=4b2554510856f2dcc9ef34f90a838eb9&query=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}&units=m`
+    const url = `http://api.weatherstack.com/current?access_key=${process.env.WEATHER_API_KEY}&query=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}&units=m`
     const response = await request({ url, json: true })
     if (response.error) throw new Error ('No connection available.')
         return {
