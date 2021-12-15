@@ -8,9 +8,7 @@ custLocWeather.addEventListener('click', async (event) => {
     event.preventDefault()
     const location = search.value
     weatherMessage.textContent = 'Loading'
-    const response = await fetch(`/weather?address=${location}`)
-    const data = await response.json()
-    forecastMarkupCreator(data)
+    forecastGetter(location)
 })
 
 currLocWeather.addEventListener('click', async (event) => {
@@ -19,7 +17,6 @@ currLocWeather.addEventListener('click', async (event) => {
         return alert('Geolocation is not supported by your browser.')
     }
     const coordinates = await getCurrentPosition();
-    const response = await fetch(`/weather?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}`)
-    const data = await response.json()
-    forecastMarkupCreator(data)
+    weatherMessage.textContent = 'Loading'
+    forecastGetter(coordinates)
 })
