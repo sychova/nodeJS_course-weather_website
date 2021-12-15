@@ -1,6 +1,5 @@
-const forecastCreator = (data) => {
-	// const weatherMessage = document.querySelector('#message')
-	// const weatherIcon = document.querySelector('#weatherIcon')
+const forecastMarkupCreator = (data) => {
+	if (data.error) return weatherMessage.textContent = data.error
 	weatherIcon.style.display = 'block'
     weatherIcon.alt = `${data.description}`
     weatherIcon.src = `${data.icon}`

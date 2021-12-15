@@ -10,8 +10,7 @@ custLocWeather.addEventListener('click', async (event) => {
     weatherMessage.textContent = 'Loading'
     const response = await fetch(`/weather?address=${location}`)
     const data = await response.json()
-    if (data.error) return weatherMessage.textContent = data.error
-    forecastCreator(data)
+    forecastMarkupCreator(data)
 })
 
 currLocWeather.addEventListener('click', async (event) => {
@@ -22,6 +21,5 @@ currLocWeather.addEventListener('click', async (event) => {
     const coordinates = await getCurrentPosition();
     const response = await fetch(`/weather?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}`)
     const data = await response.json()
-    if (data.error) return weatherMessage.textContent = data.error
-    forecastCreator(data)
+    forecastMarkupCreator(data)
 })
