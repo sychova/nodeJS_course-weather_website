@@ -17,18 +17,17 @@ custLocWeather.addEventListener('click', async (event) => {
         weatherMessage.textContent = `You're in ${data.location}. The temperature is ${data.temperature}. And it feels like ${data.feelslike}.`
 })
 
-currLocWeather.addEventListener('click', (event) => {
+currLocWeather.addEventListener('click', async (event) => {
     event.preventDefault()
     if (!navigator.geolocation) {
         return alert('Geolocation is not supported by your browser.')
     }
-    navigator.geolocation.getCurrentPosition(async (position) => {
-        const response = await fetch(`/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
-        const data = await response.json()
-        if (data.error) return weatherMessage.textContent = data.error
-            weatherIcon.style.display = 'block'
-            weatherIcon.alt = `${data.description}`
-            weatherIcon.src = `${data.icon}`
-            weatherMessage.textContent = `You are in ${data.location}. The temperature is ${data.temperature}. And it feels like ${data.feelslike}.`
-    })
+    const coordinates = await getCurrentPosition();
+    const response = await fetch(`/weather?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}`)
+    const data = await response.json()
+    if (data.error) return weatherMessage.textContent = data.error
+    weatherIcon.style.display = 'block'
+    weatherIcon.alt = `${data.description}`
+    weatherIcon.src = `${data.icon}`
+    weatherMessage.textContent = `You are in ${data.location}. The temperature is ${data.temperature}. And it feels like ${data.feelslike}.`
 })
