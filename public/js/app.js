@@ -16,7 +16,7 @@ currLocWeather.addEventListener('click', async (event) => {
     if (!navigator.geolocation) {
         return alert('Geolocation is not supported by your browser.')
     }
-    const coordinates = await getCurrentPosition();
+    const coordinates = await getCurrentPosition()
     weatherMessage.textContent = 'Loading'
     forecastGetter(coordinates)
 })

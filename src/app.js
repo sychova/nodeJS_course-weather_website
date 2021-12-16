@@ -5,7 +5,6 @@ const hbs = require('hbs')
 const { geocode } = require('./utils/geocode')
 const { forecast } = require('./utils/forecast')
 
-
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -25,14 +24,14 @@ app.use(express.static(publicDirPath))
 app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About me',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
@@ -40,7 +39,7 @@ app.get('/help', (req, res) => {
     res.render('help', {
         title: 'Help page',
         helpMessage: 'This is a help page.',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
@@ -49,10 +48,12 @@ app.get('/weather', async (req, res) => {
         const { address, lat, lon } = req.query
         if (!address && !lat && !lon) {
             return res.json({
-                error: 'No location provided!'
+                error: 'No location provided!',
             })
         }
-        const coordinates = req.query.address ? await geocode(req.query.address) : { latitude: req.query.lat, longitude: req.query.lon }
+        const coordinates = req.query.address
+            ? await geocode(req.query.address)
+            : { latitude: req.query.lat, longitude: req.query.lon }
         const weather = await forecast(coordinates)
         res.status(200).json(weather)
     } catch (error) {
@@ -63,12 +64,12 @@ app.get('/weather', async (req, res) => {
 app.get('/products', (req, res) => {
     if (!req.query.search) {
         return res.json({
-            error: 'No search property provided'
+            error: 'No search property provided',
         })
     }
     res.json({
         location: 'Minsk',
-        temperature: 2
+        temperature: 2,
     })
 })
 
@@ -76,7 +77,7 @@ app.get('/help/*', (req, res) => {
     res.render('error', {
         title: 'Error page',
         errorMessage: 'Help article not found',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
@@ -84,7 +85,7 @@ app.get('*', (req, res) => {
     res.render('error', {
         title: 'Error page',
         errorMessage: 'Page not found',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
