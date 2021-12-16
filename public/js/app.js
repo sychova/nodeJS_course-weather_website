@@ -8,7 +8,7 @@ custLocWeather.addEventListener('click', async (event) => {
     event.preventDefault()
     const location = search.value
     weatherMessage.textContent = 'Loading'
-    forecastGetter(location)
+    getForecast(location)
 })
 
 currLocWeather.addEventListener('click', async (event) => {
@@ -18,5 +18,5 @@ currLocWeather.addEventListener('click', async (event) => {
     }
     const coordinates = await getCurrentPosition()
     weatherMessage.textContent = 'Loading'
-    forecastGetter(coordinates)
+    getForecast(coordinates)
 })
