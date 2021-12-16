@@ -1,7 +1,7 @@
 const request = require('request-promise-native')
 
 const geocode = async (address) => {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=pk.eyJ1IjoibWFzaWsiLCJhIjoiY2t2MHpsajFrMWV1cjJ1cXd0d3AwaHc5NiJ9.n6ijCTU5dTlCBmQJZzW33g`
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${process.env.GEOLOCATION_API_KEY}`
     const response = await request({ url, json: true })
     if (!response.features.length) throw new Error ('No match found')
     
