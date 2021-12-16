@@ -52,14 +52,9 @@ app.get('/weather', async (req, res) => {
                 error: 'No location provided!'
             })
         }
-        if (req.query.address) {
-            const coordinates = await geocode(req.query.address)
-            const weather = await forecast(coordinates)
-            res.status(200).json(weather)
-        } else {
-            const weather = await forecast({ latitude: req.query.lat, longitude: req.query.lon })
-            res.status(200).json(weather)
-        }
+        const coordinates = req.query.address ? await geocode(req.query.address) : { latitude: req.query.lat, longitude: req.query.lon }
+        const weather = await forecast(coordinates)
+        res.status(200).json(weather)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
