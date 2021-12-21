@@ -12,18 +12,24 @@
 
 <body>
     {{>header}}
-    <div class="content">
+    <div class="wrapper">
         <h1>{{title}}</h1>
-            <p>Here's the weather.</p>
-    <form>
-        <input placeholder='Location'>
-        <button>Search</button>
-    </form>
-    <img id='weatherIcon' style="display:none">
-    <p id='message'></p>
+        <div calss='content'>
+            <form>
+                <input placeholder='Enter location'>
+                <button id='custLoc'>Search</button>
+                <button id='currLoc'>Get current location weather</button>
+            </form>
+        </div>
+        <div class='content content__weather'>
+            <img id='weatherIcon' style="display:none">
+            <p id='message'></p>
+        </div>
     </div>
     {{>footer}}
     <script src='/js/app.js'></script>
+    <script src='/js/navigation.js'></script>
+    <script src='/js/forecast.js'></script>
 </body>
 
 </html>

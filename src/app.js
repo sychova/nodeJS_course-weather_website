@@ -1,8 +1,9 @@
 const path = require('path')
+require('dotenv').config()
 const express = require('express')
 const hbs = require('hbs')
-const geocode = require('./utils/geocode')
-const forecast = require('./utils/forecast')
+const { geocode } = require('./utils/geocode')
+const { forecast } = require('./utils/forecast')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -23,14 +24,14 @@ app.use(express.static(publicDirPath))
 app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About me',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
@@ -38,45 +39,37 @@ app.get('/help', (req, res) => {
     res.render('help', {
         title: 'Help page',
         helpMessage: 'This is a help page.',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
-app.get('/weather', (req, res) => {
-    if (!req.query.address) {
-        return res.send({
-            error: 'No address provided!'
-        })
-    }
-    geocode.geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
-        if (error) {
-            return res.send({ error })
-        }
-        forecast.forecast(latitude, longitude, (error, { description, temperature, feelslike, icon }) => {
-            if (error) {
-                return res.send({ error })
-            }
-            res.send({
-                description,
-                temperature,
-                feelslike,
-                icon,
-                location,
-                address: req.query.address
+app.get('/weather', async (req, res) => {
+    try {
+        const { address, lat, lon } = req.query
+        if (!address && !lat && !lon) {
+            return res.json({
+                error: 'No location provided!',
             })
-        })
-    })
+        }
+        const coordinates = req.query.address
+            ? await geocode(req.query.address)
+            : { latitude: req.query.lat, longitude: req.query.lon }
+        const weather = await forecast(coordinates)
+        res.status(200).json(weather)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
 })
 
 app.get('/products', (req, res) => {
     if (!req.query.search) {
-        return res.send({
-            error: 'No search property provided'
+        return res.json({
+            error: 'No search property provided',
         })
     }
-    res.send({
+    res.json({
         location: 'Minsk',
-        temperature: 2
+        temperature: 2,
     })
 })
 
@@ -84,7 +77,7 @@ app.get('/help/*', (req, res) => {
     res.render('error', {
         title: 'Error page',
         errorMessage: 'Help article not found',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
@@ -92,10 +85,10 @@ app.get('*', (req, res) => {
     res.render('error', {
         title: 'Error page',
         errorMessage: 'Page not found',
-        name: 'Anastasiya Sychova'
+        name: 'Anastasiya Sychova',
     })
 })
 
 app.listen(port, () => {
-    console.log('App ready!')
+    console.log(`App ready on port ${port}!`)
 })

@@ -1,20 +1,18 @@
-const request = require('request')
+const request = require('request-promise-native')
 
-const geocode = (address, callback) => {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=pk.eyJ1IjoibWFzaWsiLCJhIjoiY2t2MHpsajFrMWV1cjJ1cXd0d3AwaHc5NiJ9.n6ijCTU5dTlCBmQJZzW33g`
-    request({ url, json: true }, (error, { body }) => {
-        if (error) {
-            callback('No connection available.', undefined)
-        } else if (body.features.length === 0) {
-            callback('No match found.', undefined)
-        } else {
-            callback(undefined, {
-                latitude: body.features[0].center[1],
-                longitude: body.features[0].center[0],
-                location: body.features[0].place_name
-            })
-        }
-    })
+const geocode = async (address) => {
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+        address
+    )}.json?access_token=${process.env.GEOLOCATION_API_KEY}`
+    const response = await request({ url, json: true })
+    if (!response.features.length) throw new Error('No match found')
+
+    return {
+        latitude: response.features[0].center[1],
+        longitude: response.features[0].center[0],
+    }
 }
 
-module.exports.geocode = geocode
+module.exports = {
+    geocode,
+}

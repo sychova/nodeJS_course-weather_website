@@ -1,21 +1,23 @@
-const request = require('request')
+const request = require('request-promise-native')
 
-const forecast = (lat, lon, callback) => {
-    const url = `http://api.weatherstack.com/current?access_key=4b2554510856f2dcc9ef34f90a838eb9&query=${encodeURIComponent(lat)},${encodeURIComponent(lon)}&units=m`
-    request({ url, json: true }, (error, { body }) => {
-        if (error) {
-            callback('No connection available.', undefined)
-        } else if (body.error) {
-            callback('No match found.', undefined)
-        } else {
-            callback(undefined, {
-                description: body.current.weather_descriptions[0],
-                temperature: body.current.temperature,
-                feelslike: body.current.feelslike,
-                icon: body.current.weather_icons[0]
-            })
-        }
-    })
+const forecast = async ({ latitude, longitude }) => {
+    const url = `http://api.weatherstack.com/current?access_key=${
+        process.env.WEATHER_API_KEY
+    }&query=${encodeURIComponent(latitude)},${encodeURIComponent(
+        longitude
+    )}&units=m`
+    const response = await request({ url, json: true })
+    if (response.error) throw new Error('No connection available.')
+
+    return {
+        description: response.current.weather_descriptions[0],
+        temperature: response.current.temperature,
+        feelslike: response.current.feelslike,
+        icon: response.current.weather_icons[0],
+        location: response.location.region,
+    }
 }
 
-module.exports.forecast = forecast
+module.exports = {
+    forecast,
+}
